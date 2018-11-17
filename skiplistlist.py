@@ -120,7 +120,7 @@ class SkiplistList(BaseList):
         return k
 
 
-    def truncar2(self, i):
+    def truncar(self, i):
         u = self.sentinel
         r = self.h
         j = -1
@@ -128,132 +128,30 @@ class SkiplistList(BaseList):
         h1 = None
         y = self.find_pred(i)
         while r >= 0:
+
             while u.next[r] != None and j + u.length[r] < i:
                 if h1 == None:
                     h1 = r
                 j += u.length[r]
                 u = u.next[r]
+
             if u.next[r] != None:
                 if h2 == None:
                     h2 = r
+                    w = self._new_node(None, h2)
+                    self._add(i, w)
                 u.next[r] = None
+
             r = r - 1
 
         if h1 == None:
             h1 = 0
 
-        w = self._new_node(None, h2)
-        self._add(i, w)
+        
 
         numero_de_elementos_2_parte = self.n - i
 
         self.h = h1
         self.n = i
 
-        print('y.height()', y.height())
-        print('h1', h1)
-        print('h2', h2)
-        return {
-            'sentinel': w,
-            'n': numero_de_elementos_2_parte,
-            'h': h2,
-        }
-
-
-    def truncar(self, i):
-        u = self.sentinel
-        h = self.h
-        j = -1
-        h2 = None
-        h1 = None
-        while h > 0:
-            while u.next[h] != None:
-                j = j + u.length[h]
-                if j < i and h1 == None:
-                    h1 = u.next[h].height()
-                if j > i:
-                    if h2 == None:
-                        h2 = u.next[h].height()
-                    u.next[h] = None
-                    print('breakou')
-                    break
-                u = u.next[h]
-            print('entrou')
-            h = h - 1
-
-        if h1 == None:
-            h1 = 0
-
-        if h2 == None:
-            h2 = 0
-
-        print('h1: ', h1)
-        print('h2: ', h2)
-        return
-
-    def truncate(self, i):
-        if i <= 0 or i > self.n-2: raise IndexError()
-        maior_altura_depois_do_corte = self._getMaiorAlturaDoNo(i, 'depois')
-        maior_altura_antes_do_corte = self._getMaiorAlturaDoNo(i, 'antes')
-        print('maior_altura_depois_do_corte', maior_altura_depois_do_corte)
-        print('maior_altura_antes_do_corte', maior_altura_antes_do_corte)
-        qtde_elementos_anterior = self.n
-        self._reduzAlturaDoSentinela(maior_altura_antes_do_corte)
-        novo_sentinela_depois = self._new_node(None, maior_altura_depois_do_corte)
-        no_antes_corte = self.find_pred(i)
-        novo_sentinela = self._add(i, novo_sentinela_depois)
-        self._limpaOsNext(no_antes_corte)
-        self.n = i
-
-        return novo_sentinela
-
-        # Ajeitar retorno para um classe
-        return {
-            'n': qtde_elementos_anterior - i, 
-            'sentinel': novo_sentinela_depois, 
-            'h': maior_altura_depois_do_corte
-        }
-
-    def _reduzAlturaDoSentinela(self, altura):
-        while self.h > altura:
-            self.h -= 1
-
-
-    def _getMaiorAlturaDoNo(self, i, direcao):
-        h = self.h
-        no = None
-        while no == None:
-            indices_maior_h = self._getIndicesDosNosDeAltura(h)
-            if direcao == 'antes':
-                no = self._getIndiceAntesDoNo(i, indices_maior_h)
-            else:
-                no = self._getIndiceDepoisDoNo(i, indices_maior_h)
-            h = h - 1
-        return h+1
-
-
-    def _getIndicesDosNosDeAltura(self, h):
-        j = -1
-        posicoes = []
-        u = self.sentinel
-        while u.next[h] != None:
-            j += u.length[h]
-            posicoes.append(j)
-            u = u.next[h]
-        return posicoes
-
-    def _getIndiceAntesDoNo(self, i, indices):
-        for x in indices:
-            if x < i:
-                return x 
-        return None
-    def _getIndiceDepoisDoNo(self, i, indices):
-        for x in indices:
-            if x >= i:
-                return x
-        return None
-
-    def _limpaOsNext(self, no):
-        for x in range(no.height()+1):
-            print('entrou')
-            no.next[x] = None
+        return w

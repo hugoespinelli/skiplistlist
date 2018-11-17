@@ -18,7 +18,7 @@ for i in range(skipll.n):
 	pprint.pprint(vars(node))
 	node = node.next[0]
 
-new_list = skipll.truncar2(2)
+new_list = skipll.truncar(2)
 print(new_list)
 # print(new_list)
 # print(new_list.next[0])
