@@ -1,5 +1,4 @@
 from skiplistlist import SkiplistList
-from skiplistsset import SkiplistSSet
 import pprint
 
 skipll = SkiplistList([0,1,2,3])
