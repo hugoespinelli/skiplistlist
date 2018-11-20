@@ -1,5 +1,6 @@
 from skiplistlist import SkiplistList
 import pprint
+import numpy
 
 skipll = SkiplistList([0,1,2,3])
 
@@ -17,10 +18,7 @@ for i in range(skipll.n):
 	pprint.pprint(vars(node))
 	node = node.next[0]
 
-new_list = skipll.truncar(2)
-print(new_list)
-# print(new_list)
-# print(new_list.next[0])
+new_list = skipll.truncar(1)
 node = sentinela.next[0]
 
 print('###'*20)
@@ -32,6 +30,12 @@ for i in range(skipll.n):
 	pprint.pprint(vars(node))
 	node = node.next[0]
 
-# print('altura do sentinela:', skipll.h)
-# print('n de elementos:', skipll.n)
-# print('sentinela:', skipll.stack)
+node = new_list.sentinel
+print('###'*20)
+print('RETORNO ARRAY TRUNCADO')
+pprint.pprint(vars(new_list))
+for i in range(new_list.n):
+	print('*'*30)
+	print('next')
+	pprint.pprint(vars(node))
+	node = node.next[0]

@@ -126,32 +126,37 @@ class SkiplistList(BaseList):
         j = -1
         h2 = None
         h1 = None
-        y = self.find_pred(i)
         while r >= 0:
 
+            # Percorre para direita ate achar o proximo no nulo ou no depois do indice de truncar
             while u.next[r] != None and j + u.length[r] < i:
                 if h1 == None:
                     h1 = r
                 j += u.length[r]
                 u = u.next[r]
 
+            # Cai nesse caso, apenas se houver um no depois do indice de truncar
             if u.next[r] != None:
                 if h2 == None:
                     h2 = r
                     w = self._new_node(None, h2)
                     self._add(i, w)
                 u.next[r] = None
+                u.length[r] = 1
 
             r = r - 1
 
         if h1 == None:
             h1 = 0
-
         
+        # Cria skiplistlist de retorno
+        new_skipll = SkiplistList()
+        new_skipll.sentinel = w
+        new_skipll.h = h2
+        new_skipll.n = self.n - i
 
-        numero_de_elementos_2_parte = self.n - i
-
+        # Atualiza a altura e numero de elementos da lista truncada
         self.h = h1
         self.n = i
 
-        return w
+        return new_skipll
